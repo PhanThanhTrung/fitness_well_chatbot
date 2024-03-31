@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tailwind',
     'chat.apps.ChatConfig',
-    'theme.apps.ThemeConfig'
+    'theme.apps.ThemeConfig',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 TAILWIND_APP_NAME = 'theme'
 
