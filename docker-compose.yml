@@ -1,0 +1,32 @@
+version: 'v1'
+
+services:
+  redis:
+    image: redis/redis-stack:latest
+    restart: always
+    ports:
+      - 6379:6379
+      - 8001:8001
+    volumes: 
+      - ./data:/data
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+    command: python3 manage.py tailwind start
+  chatbot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - frontend
+    ports: 
+      - 8000:8000
+    command: python manage.py runserver 0.0.0.0:8000
+networks:
+  demo_chatbot:
+    driver: "bridge"
+
