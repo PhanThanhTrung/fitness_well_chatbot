@@ -9,7 +9,7 @@ class Assistant:
         self.client = OpenAI(api_key=os.environ.get("SECRET_KEY"))
         self.thread = self.client.beta.threads.create()
         self.assistant = self.client.beta.assistants.list().data[-1]
-        # import ipdb; ipdb.set_trace()
+
     def talk_to_assistant(self, input_text):
         self.client.beta.threads.messages.create(
             thread_id=self.thread.id,
