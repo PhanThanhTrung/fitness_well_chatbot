@@ -9,3 +9,4 @@ redis==4.3.4
 django-tailwind==3.4.0
 python-dotenv==1.0.1
 openai==1.16.1
+Markdown==3.6
