@@ -9,24 +9,26 @@ services:
       - 8001:8001
     volumes: 
       - ./data:/data
-  frontend:
+  
+  tailwind:
     build:
       context: .
       dockerfile: Dockerfile
-    depends_on:
-      - redis
-    command: python3 manage.py tailwind start
+    restart: "unless-stopped"
+    command: "python manage.py tailwind start"
+    tty: true
+
   chatbot:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
       - redis
-      - frontend
+      - tailwind
     ports: 
       - 8000:8000
-    command: python manage.py runserver 0.0.0.0:8000
+    command: /bin/sh -c "python3 manage.py runserver 0.0.0.0:8000"
 networks:
   demo_chatbot:
-    driver: "bridge"
+    driver: bridge
 
