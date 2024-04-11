@@ -138,3 +138,5 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+TESTING_DATA_FILE = 'data'
