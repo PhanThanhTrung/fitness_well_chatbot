@@ -3,7 +3,6 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from .chatbot import Assistant
 import markdown
-import pandas as pd
 import os
 class ChatConsumer(WebsocketConsumer):
     _bot = Assistant()
