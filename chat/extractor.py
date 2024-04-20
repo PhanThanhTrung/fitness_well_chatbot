@@ -1,4 +1,6 @@
+#%%
 import json
+#%%
 class Extractor:
     def __init__(self) -> None:
         pass
@@ -67,28 +69,40 @@ class Extractor:
                 textline = textline.replace("Số lượng set: ", '')
                 textline = textline.strip(' ')
                 exercise["num_set"] = textline.split(' ')[0]
-                exercise["num_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
+                if len(textline.split(' '))==1:
+                    exercise["num_set_unit"] = 'set'
+                else:
+                    exercise["num_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
                 continue
             
             if textline.startswith("Số lượng rep:"):
                 textline = textline.replace("Số lượng rep: ", '')
                 textline = textline.strip(' ')
                 exercise["num_rep"] = textline.split(' ')[0]
-                exercise["num_rep_unit"] = textline.split(' ')[1].strip('(').strip(')')
+                if len(textline.split(' '))==1:
+                    exercise["num_rep_unit"] = 'rep/set'
+                else:
+                    exercise["num_rep_unit"] = textline.split(' ')[1].strip('(').strip(')')
                 continue
             
             if textline.startswith("Khối lượng tạ:"):
                 textline = textline.replace("Khối lượng tạ: ", '')
                 textline = textline.strip(' ')
                 exercise["volume"] = textline.split(' ')[0]
-                exercise["volume_unit"] = textline.split(' ')[1].strip('(').strip(')')
+                if len(textline.split(' '))==1:
+                    exercise["volume_unit"] = 'rep/set'
+                else:
+                    exercise["volume_unit"] = textline.split(' ')[1].strip('(').strip(')')
                 continue
 
             if textline.startswith("Thời gian nghỉ:"):
                 textline = textline.replace("Thời gian nghỉ: ", '')
                 textline = textline.strip(' ')
                 exercise["rest_per_set"] = textline.split(' ')[0]
-                exercise["rest_per_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
+                if len(textline.split(' '))==1:
+                    exercise["rest_per_set_unit"] = 'rep/set'
+                else:
+                    exercise["rest_per_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
                 continue
 
             if textline.startswith("Tempo:"):
@@ -117,7 +131,7 @@ class Extractor:
         main_muscle = main_muscle.split(',')
         output = {
             "day": weekday,
-            "main_muscle": main_muscle,
+            "main_muscle": [elem.strip(' ') for elem in main_muscle],
             "exercises": self.__get_exercise(input_list=main_schedule)
         }
         return output
