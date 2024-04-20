@@ -52,7 +52,7 @@ def __mapping_days(input_str):
         "sunday": ["chủ nhật", "thứ 8", "sunday", "thứ chủ nhật", "ngày chủ nhật", "ngày CN"],
     }
     for key, value in _volcabulary.items():
-        if input_str in value:
+        if input_str.lower() in value:
             return key
     raise ValueError(f"Not found {input_str} in the volcabulary. Please give it a check")
 
@@ -63,6 +63,7 @@ def __get_exercise(input_list):
         if textline.endswith(':') and len(exercise)!=0:
             output.append(exercise)
             exercise = {}
+        
         if textline.endswith(':'):
             exercise["name"] = textline.strip(':')
             continue
@@ -95,15 +96,22 @@ def __get_exercise(input_list):
             exercise["rest_per_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
             continue
 
-        if textline.startswith("Số lượng rep:"):
-            textline = textline.replace("Số lượng rep: ", '')
+        if textline.startswith("Tempo:"):
+            textline = textline.replace("Tempo: ", '')
             textline = textline.strip(' ')
-            exercise["num_set"] = int(textline.split(' ')[0])
-            exercise["num_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
+            exercise["tempo"] = textline
             continue
+
+        if textline.startswith("Lưu ý:"):
+            textline = textline.replace("Lưu ý: ", '')
+            exercise["note"] = textline.strip(' ')
+            continue
+    if len(exercise)!=0:
+        output.append(exercise)
+    return output
 #%%
 def __parse_to_json(schedule_str):
-    day_title = schedule_str[0]
+    day_title, main_schedule = schedule_str[0], schedule_str[1:]
     try:
         weekday, main_muscle = day_title.split(': ')
     except Exception as e:
@@ -115,10 +123,16 @@ def __parse_to_json(schedule_str):
     output = {
         "day": weekday,
         "main_muscle": main_muscle,
+        "exercises": __get_exercise(input_list=main_schedule)
     }
     return output
 #%%
 def _segmentize_message_to_days(message):
     all_schedule_line = __preprocess_ms(message=message)
     schedule_str_list = __merge_all_line_to_days(all_schedule_line=all_schedule_line)
+    workout_schedule = []
+    for schedule_of_day in schedule_str_list:
+        cur_day_schedule = __parse_to_json(schedule_str=schedule_of_day)
+        workout_schedule.append(cur_day_schedule)
+    return workout_schedule
 # %%
