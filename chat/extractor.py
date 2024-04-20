@@ -39,20 +39,39 @@ def __merge_all_line_to_days(all_schedule_line):
     if len(elemental_day) != 0:
         all_days.append(elemental_day)
     return all_days
+
 #%%
 def __mapping_days(input_str):
-    dictionary = {
+    _volcabulary = {
         "monday": ["thứ 2", "monday", "thứ hai", "ngày thứ hai", "ngày thứ 2"],
-        "tuesday": ["thứ 3", "tuesday", "thứ ba"],
-        "wenesday": ["thứ 4", "wenesday", "thứ tư"],
-        "thusday": ["thứ 5", "thusday", "thứ năm"],
-        "friday": ["thứ 6", "friday", "thứ sáu"],
-        "saturday": ["thứ 7", "saturday", "thứ bảy", "thứ bẩy"],
-        "sunday": ["chủ nhật", "thứ 8", "sunday", "thứ chủ nhật"],
+        "tuesday": ["thứ 3", "tuesday", "thứ ba", "ngày thứ ba", "ngày thứ 3"],
+        "wenesday": ["thứ 4", "wenesday", "thứ tư", "ngày thứ tư", "ngày thứ 4"],
+        "thusday": ["thứ 5", "thusday", "thứ năm", "ngày thứ năm", "ngày thứ 5"],
+        "friday": ["thứ 6", "friday", "thứ sáu", "ngày thứ sáu", "ngày thứ 6"],
+        "saturday": ["thứ 7", "saturday", "thứ bảy", "thứ bẩy", "ngày thứ bảy", "ngày thứ 7"],
+        "sunday": ["chủ nhật", "thứ 8", "sunday", "thứ chủ nhật", "ngày chủ nhật", "ngày CN"],
     }
+    for key, value in _volcabulary.items():
+        if input_str in value:
+            return key
+    raise ValueError(f"Not found {input_str} in the volcabulary. Please give it a check")
+
+#%% 
 def __parse_to_json(schedule_str):
     day_title = schedule_str[0]
-    main_muscle = day_title.split(': ')
+    try:
+        weekday, main_muscle = day_title.split(': ')
+    except Exception as e:
+        # Miss identify line.
+        print(f"Current value of day_title: {day_title}")
+        raise e
+    weekday = __mapping_days(input_str=weekday)
+    main_muscle = main_muscle.split(',')
+    output = {
+        "day": weekday,
+        "main_muscle": main_muscle,
+    }
+    return output
 #%%
 def _segmentize_message_to_days(message):
     all_schedule_line = __preprocess_ms(message=message)
