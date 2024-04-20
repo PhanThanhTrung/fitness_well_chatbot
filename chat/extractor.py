@@ -56,7 +56,52 @@ def __mapping_days(input_str):
             return key
     raise ValueError(f"Not found {input_str} in the volcabulary. Please give it a check")
 
-#%% 
+#%%
+def __get_exercise(input_list):
+    exercise, output = {}, []
+    for textline in input_list:
+        if textline.endswith(':') and len(exercise)!=0:
+            output.append(exercise)
+            exercise = {}
+        if textline.endswith(':'):
+            exercise["name"] = textline.strip(':')
+            continue
+            
+        if textline.startswith("Số lượng set:"):
+            textline = textline.replace("Số lượng set: ", '')
+            textline = textline.strip(' ')
+            exercise["num_set"] = textline.split(' ')[0]
+            exercise["num_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
+            continue
+        
+        if textline.startswith("Số lượng rep:"):
+            textline = textline.replace("Số lượng rep: ", '')
+            textline = textline.strip(' ')
+            exercise["num_rep"] = textline.split(' ')[0]
+            exercise["num_rep_unit"] = textline.split(' ')[1].strip('(').strip(')')
+            continue
+        
+        if textline.startswith("Khối lượng tạ:"):
+            textline = textline.replace("Khối lượng tạ: ", '')
+            textline = textline.strip(' ')
+            exercise["volume"] = textline.split(' ')[0]
+            exercise["volume_unit"] = textline.split(' ')[1].strip('(').strip(')')
+            continue
+
+        if textline.startswith("Thời gian nghỉ:"):
+            textline = textline.replace("Thời gian nghỉ: ", '')
+            textline = textline.strip(' ')
+            exercise["rest_per_set"] = textline.split(' ')[0]
+            exercise["rest_per_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
+            continue
+
+        if textline.startswith("Số lượng rep:"):
+            textline = textline.replace("Số lượng rep: ", '')
+            textline = textline.strip(' ')
+            exercise["num_set"] = int(textline.split(' ')[0])
+            exercise["num_set_unit"] = textline.split(' ')[1].strip('(').strip(')')
+            continue
+#%%
 def __parse_to_json(schedule_str):
     day_title = schedule_str[0]
     try:
