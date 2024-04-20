@@ -19,6 +19,7 @@ def __preprocess_ms(message):
     splitted_ws_str = [elem for elem in splitted_ws_str if elem != '']
     return splitted_ws_str
 
+#%%
 def __normalize_txt(textline):
     textline = textline.strip()
     textline = textline.strip("- ")
@@ -26,6 +27,7 @@ def __normalize_txt(textline):
     textline = textline.replace("**", "")
     return textline
 
+#%%
 def __merge_all_line_to_days(all_schedule_line):
     elemental_day, all_days = [], []
     for textline in all_schedule_line:
@@ -34,12 +36,24 @@ def __merge_all_line_to_days(all_schedule_line):
             all_days.append(elemental_day)
             elemental_day = []
         elemental_day.append(normed_textline)
+    if len(elemental_day) != 0:
+        all_days.append(elemental_day)
     return all_days
-
+#%%
+def __mapping_days(input_str):
+    dictionary = {
+        "monday": ["thứ 2", "monday", "thứ hai", "ngày thứ hai", "ngày thứ 2"],
+        "tuesday": ["thứ 3", "tuesday", "thứ ba"],
+        "wenesday": ["thứ 4", "wenesday", "thứ tư"],
+        "thusday": ["thứ 5", "thusday", "thứ năm"],
+        "friday": ["thứ 6", "friday", "thứ sáu"],
+        "saturday": ["thứ 7", "saturday", "thứ bảy", "thứ bẩy"],
+        "sunday": ["chủ nhật", "thứ 8", "sunday", "thứ chủ nhật"],
+    }
 def __parse_to_json(schedule_str):
     day_title = schedule_str[0]
-    
-
+    main_muscle = day_title.split(': ')
+#%%
 def _segmentize_message_to_days(message):
     all_schedule_line = __preprocess_ms(message=message)
     schedule_str_list = __merge_all_line_to_days(all_schedule_line=all_schedule_line)
