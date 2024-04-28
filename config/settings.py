@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'tailwind',
     'chat.apps.ChatConfig',
     'theme.apps.ThemeConfig',
+    'managements.apps.ManagementsConfig'
 ]
 
 MIDDLEWARE = [
