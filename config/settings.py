@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tailwind',
+    'rest_framework',
+    'rest_framework_swagger',
     'chat.apps.ChatConfig',
     'theme.apps.ThemeConfig',
     'managements.apps.ManagementsConfig'
