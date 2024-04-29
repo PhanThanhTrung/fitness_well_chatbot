@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("", include("chat.urls", namespace="chat")),
+    path(route="admin/", view=admin.site.urls),
+    path(route="chat/", view=include("chat.urls", namespace="chat")),
+    path(route="management/", view=include("managements.urls", namespace="management"))
 ]
