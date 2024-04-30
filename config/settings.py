@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tailwind',
     'rest_framework',
-    'rest_framework_swagger',
+    'drf_yasg',
     'chat.apps.ChatConfig',
     'theme.apps.ThemeConfig',
     'managements.apps.ManagementsConfig'
