@@ -1,13 +1,8 @@
 from managements.models import Exercise
 from managements.serializers import ExerciseSerializer
-from rest_framework import generics
+from rest_framework import viewsets
 
 
-class ExercisesListView(generics.ListCreateAPIView):
-    queryset = Exercise.objects.all()
-    serializer_class = ExerciseSerializer
-
-
-class ExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ExercisesViewSet(viewsets.ModelViewSet):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer

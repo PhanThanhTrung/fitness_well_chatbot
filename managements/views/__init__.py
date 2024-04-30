@@ -1,1 +1,1 @@
-from .exercises import ExercisesListView, ExerciseDetailView
+from .exercises import ExercisesViewSet
