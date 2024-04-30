@@ -6,5 +6,5 @@ router = routers.DefaultRouter()
 router.register(prefix=r"exercises/", viewset=ExercisesViewSet, basename="exercise")
 
 urlpatterns = [
-
+    path('', include(router.urls)),
 ]
