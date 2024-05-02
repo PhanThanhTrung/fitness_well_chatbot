@@ -4,9 +4,20 @@ from channels.generic.websocket import WebsocketConsumer
 from .chatbot import Assistant
 import markdown
 import os
+from .extractor import Extractor
+
 class ChatConsumer(WebsocketConsumer):
     _bot = Assistant()
     _chat_history = []
+    current_workout_routine = []
+    def connect(self):
+        # Create folder to dump data to.
+        _current_thread_id = self._bot.thread.id
+        _path = os.path.join(os.environ.get("TESTING_DATA_FILE", "data"), _current_thread_id)
+        os.makedirs(_path, exist_ok=True)
+        self._path = _path
+        return super().connect()
+
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         
@@ -20,6 +31,13 @@ class ChatConsumer(WebsocketConsumer):
             self._bot.talk_to_assistant(input_text=text_data_json["text"])
             self.chat_message(event=get_event)
             output = self._bot.get_assistant_response()
+
+            if Extractor.contain_workout_schedule(message=output):
+                current_workout_routine = Extractor.get_workout_routine_json(message=output)
+                _path = os.path.join(self._path, "workout_routine.json")
+                with open(_path, 'w', encoding='utf8') as f:
+                    json.dump(current_workout_routine, fp=f, ensure_ascii=False)
+
             output_html = markdown.markdown(output)
             output_html = output_html.replace('\n', '<br>') # Monkey patching to completely convert markdown string to html
             send_event = {
@@ -43,10 +61,7 @@ class ChatConsumer(WebsocketConsumer):
         self._chat_history.append(message)
     
     def disconnect(self, code):
-        _current_thread_id = self._bot.thread.id
-        _path = os.path.join(os.environ.get("TESTING_DATA_FILE", "data"), _current_thread_id)
-        _path = _path + ".json"
-        os.makedirs(os.path.dirname(_path), exist_ok=True)
+        _path = os.path.join(self._path, "chat_history.json")
         with open(_path, 'w', encoding='utf8') as f:
             json.dump(self._chat_history, fp=f, ensure_ascii=False)
         return super().disconnect(code)
