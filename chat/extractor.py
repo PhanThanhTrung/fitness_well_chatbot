@@ -43,7 +43,7 @@ class Extractor:
         _volcabulary = {
             "monday": ["thứ 2", "monday", "thứ hai", "ngày thứ hai", "ngày thứ 2"],
             "tuesday": ["thứ 3", "tuesday", "thứ ba", "ngày thứ ba", "ngày thứ 3"],
-            "wenesday": ["thứ 4", "wenesday", "thứ tư", "ngày thứ tư", "ngày thứ 4"],
+            "wednesday": ["thứ 4", "wednesday", "thứ tư", "ngày thứ tư", "ngày thứ 4"],
             "thusday": ["thứ 5", "thusday", "thứ năm", "ngày thứ năm", "ngày thứ 5"],
             "friday": ["thứ 6", "friday", "thứ sáu", "ngày thứ sáu", "ngày thứ 6"],
             "saturday": ["thứ 7", "saturday", "thứ bảy", "thứ bẩy", "ngày thứ bảy", "ngày thứ 7"],
